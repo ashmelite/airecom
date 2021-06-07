@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Header = () => {
+const Header = () => {            //Arrow function
   return (
     <header>
       Header
