@@ -7,7 +7,7 @@ function App() {
     <>
     <Header />
     <main>
-    <h1>Welcome to Proshop</h1>
+    <h1>Welcome to AirEcom</h1>
     </main>
     <Footer />
     </>
