@@ -9,3 +9,7 @@ h3 {
 .rating span {
   margin: 0.1rem;
 }
+
+strong{
+  font-weight: bold;
+}
