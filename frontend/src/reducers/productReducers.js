@@ -5,7 +5,7 @@ import {
  } from '../constants/productConstants'
 
 
-export const productListReducer = (state = { products = [] }, action) => {       //reducer takes in initial state (we can set it to an empty obj) and an action
+export const productListReducer = (state = { products: [] }, action) => {       //reducer takes in initial state (we can set it to an empty obj) and an action
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
       return { loading: true, products: [] }                      //when we make a request, we want component to know that it's currently being fetched/loading 
