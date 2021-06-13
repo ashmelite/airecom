@@ -23,7 +23,7 @@ const ProductScreen = ({ match }) => {
       <Link className='btn btn-light my-3' to='/'>
         Go Back
       </Link>
-      {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
+      {(match.params.id !== product._id) || loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :                //originally it was just checking if loading is true, then show loader. But, this led to the behavior of last seen product details flashing for a second. So, added match params check. 
       
       <Row>
         <Col md={6}>
