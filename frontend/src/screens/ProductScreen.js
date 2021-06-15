@@ -9,7 +9,7 @@ import { listProductDetails } from '../actions/productActions'
 
 const ProductScreen = ({ history, match }) => {
   
-  const [qty, setQty] = useState(0);          //we're keeping product quantity as component level state rather than global (redux), so we use useState hook.
+  const [qty, setQty] = useState(1);          //we're keeping product quantity as component level state rather than global (redux), so we use useState hook.
   
   const dispatch = useDispatch()
   
