@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { 
+  USER_DETAILS_CLEAR,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -48,6 +49,7 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_REGISTER_CLEAR })
+  dispatch({ type: USER_DETAILS_CLEAR })
 }
 
 

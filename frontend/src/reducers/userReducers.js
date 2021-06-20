@@ -8,7 +8,8 @@ import {
   USER_REGISTER_CLEAR, 
   USER_DETAILS_REQUEST, 
   USER_DETAILS_SUCCESS, 
-  USER_DETAILS_FAIL } from "../constants/userConstants"
+  USER_DETAILS_FAIL, 
+  USER_DETAILS_CLEAR} from "../constants/userConstants"
 
 export const userLoginReducer = (state = { }, action) => {
   switch (action.type) {
@@ -33,7 +34,7 @@ export const userRegisterReducer = (state = { }, action) => {
       return { loading: false, userInfo: action.payload }
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload }
-    case USER_REGISTER_CLEAR:                             // have added this to clear userRegisterState, since userInfo kept saving in local storage even after logging out; call this on logout
+    case USER_REGISTER_CLEAR:                             // have added this to clear userRegister State, since userInfo kept saving in local storage even after logging out; call this on logout
       return { }
     default:
       return state
@@ -48,8 +49,8 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return { loading: false, user: action.payload }
     case USER_DETAILS_FAIL:
       return { loading: false, error: action.payload }
-    // case USER_DETAILS_CLEAR:                             // have added this to clear userRegisterState, since userInfo kept saving in local storage even after logging out; call this on logout
-    //   return { }
+    case USER_DETAILS_CLEAR:                             // have added this to clear userDetails State (just clearing user object inside not the whole userDetails state), call this on logout
+      return { ...state, user: {} }
     default:
       return state
   }
