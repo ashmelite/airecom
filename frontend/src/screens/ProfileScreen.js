@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 
 const ProfileScreen = ({ location, history }) => {
   
@@ -17,6 +17,10 @@ const ProfileScreen = ({ location, history }) => {
   
   const userDetails = useSelector(state => state.userDetails)
   const { loading, error, user } = userDetails
+  
+  // pull success from state, since we want to show a message if profile gets updated
+  const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+  const { success } = userUpdateProfile
   
   //checking to see if user is actually logged in, so we bring in userInfo from state
   const userLogin = useSelector(state => state.userLogin)
@@ -42,7 +46,7 @@ const ProfileScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      // dispatch update profile
+      dispatch(updateUserProfile({ id: user._id, name, email, password }))        // here note: we passed name not user.name since on form change, setName will be called which will store (updated name) into name
     }
     
   }
@@ -56,6 +60,9 @@ const ProfileScreen = ({ location, history }) => {
         }
         {
           error && <Message variant='danger'>{error}</Message>
+        }
+        {
+          success && <Message variant='success'>Profile Updated Successfully!</Message>
         }
         {
           loading && <Loader />
