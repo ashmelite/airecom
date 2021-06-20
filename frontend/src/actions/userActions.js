@@ -87,7 +87,7 @@ export const register = (name, email, password) => async (dispatch) => {
 }
 
 
-//we can use this same method for getting profile of a user as well by passing profile id (not user id) as parameter here
+//we can use this same method to check if a user is logged in or not before allowing access to a route. In ProfileScreen we pass 'profile' as a parameter (to id) while calling this method which will make the axios get request (below) point to api/users/profile instead of api/users/:userid
 export const getUserDetails = (id) => async (dispatch, getState) => {             // getState -> since we need to send token from frontend (by using headers, see below) to backend, we can get token from userInfo (state) by using getState; see * comment below
   try {
     dispatch({
