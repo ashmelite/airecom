@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS } from '../constants/cartConstants'
+import { CART_ADD_ITEM, CART_CLEAR_SHIPPING_ADDRESS, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS } from '../constants/cartConstants'
 
 export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, action) => {
   switch(action.type) {
@@ -32,6 +32,12 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, acti
         shippingAddress: action.payload             //action.payload is data which we send through form
       }
       
+    case CART_CLEAR_SHIPPING_ADDRESS:               //have added this part
+      return {
+        ...state,
+        shippingAddress: {}
+      }
+    
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -7,12 +7,12 @@ import { saveShippingAddress } from '../actions/cartActions'
 const ShippingScreen = ({ history }) => {
   
   const cart = useSelector(state => state.cart)
-  const { ShippingAddress } = cart
+  const { shippingAddress } = cart
   
-  const [address, setAddress] = useState(ShippingAddress.address)               //ShippingAddress, if it exists in local storage will be pulled out (see above, useSelector) and from that address will be filled in our initialState using useState 
-  const [city, setCity] = useState(ShippingAddress.city)
-  const [postalCode, setPostalCode] = useState(ShippingAddress.postalCode)
-  const [country, setCountry] = useState(ShippingAddress.country)
+  const [address, setAddress] = useState(shippingAddress.address)               //ShippingAddress, if it exists in state will be pulled out (see above, useSelector) and from that address will be filled in our initialState using useState 
+  const [city, setCity] = useState(shippingAddress.city)
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+  const [country, setCountry] = useState(shippingAddress.country)
   
   const dispatch = useDispatch()
   
@@ -21,6 +21,21 @@ const ShippingScreen = ({ history }) => {
     dispatch(saveShippingAddress({ address, city, postalCode, country }))
     history.push('/payment')
   }
+  
+  
+  //*****
+  // Added functionality on top
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin
+  
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+  }, [history, userInfo])
+  // Above piece checks if a user logs out on shipping page, then push to login page
+  //*****
+  
   
   return (
     <FormContainer>

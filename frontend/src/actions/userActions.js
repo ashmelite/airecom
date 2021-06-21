@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CART_CLEAR_SHIPPING_ADDRESS } from '../constants/cartConstants'
 import { 
   USER_DETAILS_CLEAR,
   USER_DETAILS_FAIL,
@@ -50,9 +51,11 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
+  localStorage.removeItem('shippingAddress')
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_REGISTER_CLEAR })
   dispatch({ type: USER_DETAILS_CLEAR })
+  dispatch({ type: CART_CLEAR_SHIPPING_ADDRESS })
 }
 
 
