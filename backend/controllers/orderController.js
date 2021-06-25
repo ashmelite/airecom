@@ -45,7 +45,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 // @access  Private
 const getOrderById = asyncHandler(async (req, res) => {
   
-  const order = await Order.findById(req.params.id).populate('user', 'name, email')     //in that order, there is a user field (user id) which we want name and email back from
+  const order = await Order.findById(req.params.id).populate('user', 'name email')     //in that order, there is a user field (user id) which we want name and email back from
   
   if (order) {
     res.json(order)
