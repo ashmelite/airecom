@@ -28,8 +28,7 @@ const OrderScreen = ({ match }) => {
   
   useEffect(() => {
     dispatch(getOrderDetails(orderId))
-    // eslint-disable-next-line
-  }, [])
+  }, [dispatch, orderId])
   
   return (
     loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : 
