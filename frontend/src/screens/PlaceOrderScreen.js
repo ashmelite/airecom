@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
+import { ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   
@@ -26,6 +27,9 @@ const PlaceOrderScreen = ({ history }) => {
   const { order, success, error } = orderCreate
   
   useEffect(() => {
+    
+    dispatch({ type: ORDER_DETAILS_RESET })               //have added this to reset previous order's details from orderDetails state
+    
     if (success) {
       history.push(`/order/${order._id}`)
     }
