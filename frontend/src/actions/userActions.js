@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { CART_CLEAR_SHIPPING_ADDRESS } from '../constants/cartConstants'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import { ORDER_CREATE_RESET, ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import { 
   USER_DETAILS_CLEAR,
   USER_DETAILS_FAIL,
@@ -58,6 +58,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_DETAILS_CLEAR })
   dispatch({ type: CART_CLEAR_SHIPPING_ADDRESS })
   dispatch({ type: ORDER_CREATE_RESET })
+  dispatch({ type: ORDER_LIST_MY_RESET })
 }
 
 

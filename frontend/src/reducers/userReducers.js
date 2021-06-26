@@ -45,7 +45,7 @@ export const userRegisterReducer = (state = { }, action) => {
   }
 }
 
-export const userDetailsReducer = (state = { user: {} }, action) => {
+export const userDetailsReducer = (state = { user: { } }, action) => {
   switch (action.type) {
     case USER_DETAILS_REQUEST:
       return { ...state, loading: true }              // ...state -> return whatever there is already in the state
@@ -54,7 +54,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
     case USER_DETAILS_FAIL:
       return { loading: false, error: action.payload }
     case USER_DETAILS_CLEAR:                             // have added this to clear userDetails State (just clearing user object inside not the whole userDetails state), call this on logout
-      return { ...state, user: {} }
+      return { user: {} }
     default:
       return state
   }
