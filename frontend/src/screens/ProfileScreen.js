@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
+import { ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 const ProfileScreen = ({ location, history }) => {
   
@@ -32,6 +33,9 @@ const ProfileScreen = ({ location, history }) => {
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
   
   useEffect(() => {
+    
+    dispatch({ type: ORDER_DETAILS_RESET })               //have added this to reset previous order's details from orderDetails state
+    
     if (!userInfo) {
       history.push('/login')
     } else {

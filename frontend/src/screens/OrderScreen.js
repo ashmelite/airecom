@@ -9,13 +9,16 @@ import Loader from '../components/Loader'
 import { getOrderDetails, payOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   
   const orderId = match.params.id
   
   const [sdkReady, setSdkReady] = useState(false)
   
   const dispatch = useDispatch()
+  
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin
   
   const orderDetails = useSelector(state => state.orderDetails)
   const { order, loading, error } = orderDetails
@@ -34,6 +37,14 @@ const OrderScreen = ({ match }) => {
   
   
   useEffect(() => {
+    
+    if (!userInfo) {
+      history.push('/login')
+    } else {
+      if (loading) {
+        dispatch(getOrderDetails(orderId))
+      }
+    }
     
     // dynamically adding paypal script into html
     const addPaypalScript = async () => {
@@ -60,7 +71,7 @@ const OrderScreen = ({ match }) => {
       }
     }
     
-  }, [dispatch, orderId, successPay, order])
+  }, [dispatch, orderId, successPay, order, loading, history, userInfo])
   
   
   const successPaymentHandler = (paymentResult) => {
