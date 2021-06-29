@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listUsers } from '../actions/userActions'
+import { listUsers, deleteUser } from '../actions/userActions'
 
 const UserListScreen = ({ history }) => {
   
@@ -16,6 +16,9 @@ const UserListScreen = ({ history }) => {
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin
   
+  const userDelete = useSelector(state => state.userDelete)
+  const { success: successDelete } = userDelete
+  
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
@@ -23,10 +26,13 @@ const UserListScreen = ({ history }) => {
       history.push('/login')
     }
     
-  }, [dispatch, userInfo, history])
+  }, [dispatch, userInfo, history, successDelete])            //we've not used successDelete inside useEffect but if a user gets deleted we want to re-render the page so we've added it to dependency array
   
   const deleteHandler = (id) => {
-    console.log('delete')
+    //console.log('delete')
+    if(window.confirm('Are you sure?')) {
+      dispatch(deleteUser(id))            // pass in the id to deleteUser() which got passed down from deleteHandler
+    }
   }
   
   return (

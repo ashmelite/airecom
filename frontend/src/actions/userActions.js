@@ -2,6 +2,9 @@ import axios from 'axios'
 import { CART_CLEAR_SHIPPING_ADDRESS } from '../constants/cartConstants'
 import { ORDER_CREATE_RESET, ORDER_DETAILS_RESET, ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import { 
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_CLEAR,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -194,6 +197,35 @@ export const listUsers = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+    })
+  }
+}
+
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST
+    })
+    
+    const { userLogin: { userInfo } } = getState()
+    
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    
+    await axios.delete(`/api/users/${id}`, config)
+    
+    dispatch({
+      type: USER_DELETE_SUCCESS
+    })
+    
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
