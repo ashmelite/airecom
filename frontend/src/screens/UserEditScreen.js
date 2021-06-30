@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUser } from '../actions/userActions'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 const UserEditScreen = ({ match, history }) => {
   
   const userId = match.params.id
   
+  // these are default values of name, email & isAdmin (for empty form, i.e. when details have not been fetched)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
@@ -20,22 +22,31 @@ const UserEditScreen = ({ match, history }) => {
   const userDetails = useSelector(state => state.userDetails)
   const { loading, error, user } = userDetails
   
+  const userUpdate = useSelector(state => state.userUpdate)
+  const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = userUpdate
   
   useEffect(() => {
-    if (!user.name || user._id !== userId) {                    // !user.name -> make sure that user is not already there, only then fetch the user; same for OR condition i.e.  if user id (from state) does not match the user id from url, then fetch the user (from url id); see article 11.6 @ 8:30 for details
-      dispatch(getUserDetails(userId))
+    
+    if (successUpdate) {                        //reset the state when user gets updated successfully 
+      dispatch({ type: USER_UPDATE_RESET })
+      history.push('/admin/userlist')
     } else {
-      setName(user.name)
-      setEmail(user.email)
-      setIsAdmin(user.isAdmin)
+      if (!user.name || user._id !== userId) {                    // !user.name -> make sure that user is not already there, only then fetch the user; same for OR condition i.e.  if user id (from state) does not match the user id from url, then fetch the user (from url id); see article 11.6 @ 8:30 for details
+        dispatch(getUserDetails(userId))
+      } else {
+        setName(user.name)
+        setEmail(user.email)
+        setIsAdmin(user.isAdmin)
+      }
     }
-  }, [user, dispatch, userId])
+      
+  }, [user, dispatch, userId, successUpdate, history])
   
   
   const submitHandler = (e) => {
     e.preventDefault()
     
-    
+    dispatch(updateUser({ _id: userId, name, email, isAdmin }))         // _id: userId is not renaming (like when we destructure), it means set value of _id as userId
     
   }
   
@@ -47,6 +58,8 @@ const UserEditScreen = ({ match, history }) => {
       
       <FormContainer>
         <h1>Edit User</h1>
+        { loadingUpdate && <Loader /> }
+        { errorUpdate && <Message variant='danger'>{errorUpdate}</Message> }        
         {
           loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
           (
