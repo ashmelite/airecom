@@ -69,13 +69,11 @@ const ProductListScreen = ({ history, match }) => {
         </Col>
       </Row>
       
-      { loadingDelete && <Loader /> }
       { errorDelete && <Message variant='danger'>{errorDelete}</Message> }
       
-      { loadingCreate && <Loader /> }
       { errorCreate && <Message variant='danger'>{errorCreate}</Message> }
      
-      { loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+      { loading || loadingDelete || loadingCreate ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
