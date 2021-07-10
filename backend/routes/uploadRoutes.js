@@ -34,8 +34,8 @@ const upload = multer({                   //this is what we'll pass as middlewar
   }
 })
 
-//endpoint; it will be '/api/upload' (from server.js) and add '/' after '/api/upload' ('/' is from post req below) so that makes it as '/api/upload/'
-router.post('/', upload.single('image'), (req, res) => {                  //single -> upload only one image; see article 12.7 @ 10:00
+//endpoint; it will be '/api/upload' (from server.js) and add '/' after '/api/upload' ('/' is from post request below) so that makes it as '/api/upload/' which is still same as 'api/upload'. If it was '/example' in post request below, it'd have been 'api/upload/example'
+router.post('/', upload.single('image'), (req, res) => {                  //single -> upload only one image; see article 12.7 @ 10:00 to know more about 'image' or see uploadFileHandler function in ProductEditScreen in frontend
   res.send(`/${req.file.path}`)                                           //send back the path of the file (where it got stored)
 })
 
