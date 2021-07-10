@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {
   
@@ -25,6 +25,9 @@ const OrderScreen = ({ match, history }) => {
   
   const orderPay = useSelector(state => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay           //since we already have 'loading' from orderDetails state, renaming loading to loadingPay and success to successPay 
+  
+  const orderDeliver = useSelector(state => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
   
   if (!loading) {           //this check here prevents this error -> TypeError: order is undefined
     // Calculate Prices
@@ -60,8 +63,9 @@ const OrderScreen = ({ match, history }) => {
       document.body.appendChild(script)
     }
     
-    if (!order || successPay) {                     // we've added !order since we want to see order details even if we haven't paid
+    if (!order || successPay || successDeliver) {                     // we've added !order since we want to see order details even if we haven't paid
       dispatch({ type: ORDER_PAY_RESET })           // to prevent refreshing (loop) when you make payment
+      dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(orderId))            // if payment is successful, load the order again to show changed payment status
     } else if (!order.isPaid) {                     // if order is not paid
       if (!window.paypal) {                         // checking if paypal script is not already there
@@ -71,12 +75,16 @@ const OrderScreen = ({ match, history }) => {
       }
     }
     
-  }, [dispatch, orderId, successPay, order, loading, history, userInfo])
+  }, [dispatch, orderId, successPay, successDeliver, order, loading, history, userInfo])
   
   
   const successPaymentHandler = (paymentResult) => {
     // console.log(paymentResult)
     dispatch(payOrder(orderId, paymentResult))
+  }
+  
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
   }
   
   return (
@@ -187,6 +195,17 @@ const OrderScreen = ({ match, history }) => {
                     {!sdkReady ? <Loader /> : (
                       <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
                     )}
+                  </ListGroup.Item>
+                )
+              }
+              
+              {loadingDeliver && <Loader />}
+              {
+                userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button type='button' className='btn btn-block' onClick={deliverHandler}>
+                      Mark as Delivered
+                    </Button>
                   </ListGroup.Item>
                 )
               }
