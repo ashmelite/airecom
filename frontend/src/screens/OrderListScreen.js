@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
+import { ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 const OrderListScreen = ({ history }) => {
   
@@ -17,6 +18,9 @@ const OrderListScreen = ({ history }) => {
   const { userInfo } = userLogin
   
   useEffect(() => {
+    
+    dispatch({ type: ORDER_DETAILS_RESET })               //have added this to reset previous order's details from orderDetails state
+    
     if (userInfo && userInfo.isAdmin) {
       dispatch(listOrders())
     } else {
