@@ -1,9 +1,11 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import path from 'path'
 import connectDB from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -21,9 +23,23 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/upload', uploadRoutes)
 
 //fetch paypal client id in frontend using this route
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
+
+
+/*
+Static files are typically files such as scripts, CSS files, images, etc.
+that aren't server-generated, but must be sent to the browser when requested.
+If node.js is your web server, it does not serve any static files by default,
+you must configure it to serve the static content you want it to serve.
+*/
+
+//make uploads folder static; see article 12.7 @ 12:00
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
 
 //handling 404 page errors
 app.use(notFound)
