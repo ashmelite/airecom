@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import path from 'path'
+import morgan from 'morgan'
 import connectDB from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -13,6 +14,12 @@ dotenv.config()
 connectDB()
 
 const app = express()
+
+//morgan middleware (using in dev mode; we can use it in production mode as well)
+if(process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+}
+
 
 app.use(express.json())       //allows us to accept json data in body and we can access the data from req.body
 

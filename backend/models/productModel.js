@@ -13,7 +13,12 @@ const reviewSchema = mongoose.Schema({
   comment: {
     type: String,
     required: true
-  }
+  },
+  user: {                                               //we've referenced user to review schema so that we can check if the user already has a review on a product
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
 }, {
   timestamps: true
 })
