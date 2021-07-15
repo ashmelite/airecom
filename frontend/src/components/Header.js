@@ -1,7 +1,9 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
 
 const Header = () => {            //Arrow function
@@ -24,6 +26,11 @@ const Header = () => {            //Arrow function
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            
+            {/* <SearchBox />  if we directly put this SearchBox component here i.e inside the Header component, it won't have access to router props like history, match since header doesn't have access either. So, we use Route component and put SearchBox inside that. For more info, article 13.3 @ 11:00 */}
+            
+            <Route render={({ history }) => <SearchBox history={history} /> } />
+            
             <Nav className="ml-auto">
             <LinkContainer to='/cart'>
               <Nav.Link><i className="fas fa-shopping-cart" /> Cart</Nav.Link>

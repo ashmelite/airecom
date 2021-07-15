@@ -7,7 +7,11 @@ import Message from '../components/Message'
 import { listProducts } from '../actions/productActions'
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+  
+  //search box keyword
+  const keyword = match.params.keyword
+  
   const dispatch = useDispatch()
   
   //                                       select productList from state
@@ -15,8 +19,8 @@ const HomeScreen = () => {
   const { loading, error, products } = productList      //pull loading, error (if any) & products from state
   
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    dispatch(listProducts(keyword))
+  }, [dispatch, keyword])
   
   
   return (

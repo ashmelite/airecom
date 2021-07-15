@@ -19,6 +19,8 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 
+
+//NOTE: order of routes placed here matters; i.e. if route which has exact keyword is written at the top, the routes below it won't get pinged; for more info, Google
 function App() {
   return (
     <Router>
@@ -39,6 +41,7 @@ function App() {
           <Route path='/admin/productlist' component={ProductListScreen} />
           <Route path='/admin/orderlist' component={OrderListScreen} />
           <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
+          <Route path='/search/:keyword' component={HomeScreen} />
           <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>

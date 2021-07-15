@@ -2,14 +2,35 @@ import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 
 
+// this block here without the search keyword implementation
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
+// const getProducts = asyncHandler(async (req, res) => {
+//   const products = await Product.find({})     //find method with empty argument returns everything
+  
+//   res.json(products)    //convert products array to json object for client to use
+// })
+
+
+// @desc    Fetch all products; with search keyword implementation
+// @route   GET /api/products
+// @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})     //find method with empty argument returns everything
+  
+  const keyword = req.query.keyword ?                //query => everything after ? in a url i.e. /search?keyword=iphone
+  {
+    name: {                         //we want to match the keyword with the name of the product
+      $regex: req.query.keyword,
+      $options: 'i'                 // i = case-insensitive
+    }
+  } : {}
+  
+  const products = await Product.find({ ...keyword })     //find method with empty argument returns everything
   
   res.json(products)    //convert products array to json object for client to use
 })
+
 
 
 // @desc    Fetch single product
