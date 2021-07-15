@@ -21,13 +21,13 @@ import {
 } from '../constants/productConstants'
  
 
-//before implementing search keyword, () was empty
-export const listProducts = (keyword = '') => async (dispatch) => {          //redux thunk allows us to use function within a function so that we can make async request
+//before implementing search keyword & pagination, () was empty
+export const listProducts = (keyword = '', pageNumber= '') => async (dispatch) => {          //redux thunk allows us to use function within a function so that we can make async request
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })         //dispatch the action; PRODUCT_LIST_REQUEST is an action
     
     //after dispatching request action (above), make a request to backend for getting data back
-    const { data } = await axios.get(`/api/products?keyword=${keyword}`)          // { data } is just destructure of the actual response we're getting back from the server
+    const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)          // { data } is just destructure of the actual response we're getting back from the server
     //const { data } = await axios.get('/api/products')     before implementing search keyword the get req looked like this
     
     

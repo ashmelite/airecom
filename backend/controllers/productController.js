@@ -13,10 +13,13 @@ import Product from '../models/productModel.js'
 // })
 
 
-// @desc    Fetch all products; with search keyword implementation
+// @desc    Fetch all products; with search keyword & pagination implementation
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
+  
+  const pageSize = 2
+  const page = Number(req.query.pageNumber) || 1
   
   const keyword = req.query.keyword ?                //query => everything after ? in a url i.e. /search?keyword=iphone
   {
@@ -26,9 +29,10 @@ const getProducts = asyncHandler(async (req, res) => {
     }
   } : {}
   
-  const products = await Product.find({ ...keyword })     //find method with empty argument returns everything
+  const count = await Product.countDocuments({ ...keyword })                 //get total count of products
+  const products = await Product.find({ ...keyword }).limit(pageSize).skip(pageSize * (page - 1))     //find method with empty argument returns everything
   
-  res.json(products)    //convert products array to json object for client to use
+  res.json({products, page, pages: Math.ceil(count / pageSize)})    //convert products array to json object for client to use
 })
 
 

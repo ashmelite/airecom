@@ -28,7 +28,7 @@ export const productListReducer = (state = { products: [] }, action) => {       
     case PRODUCT_LIST_REQUEST:
       return { loading: true, products: [] }                      //when we make a request, we want component to know that it's currently being fetched/loading 
     case PRODUCT_LIST_SUCCESS:                //case for when we get a successful response back
-      return { loading: false, products: action.payload }         //see article 5.3 @ 04:00 for action.payload
+      return { loading: false, products: action.payload.products, pages: action.payload.pages, page: action.payload.page }         //see article 5.3 @ 04:00 for action.payload
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload }
     default:
