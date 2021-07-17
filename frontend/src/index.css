@@ -27,7 +27,7 @@ strong{
 /* carousel */
 .carousel-item-next,
 .carousel-item-prev,
-.carousel-item-active {
+.carousel-item.active {
   display: flex;
 }
 
@@ -41,10 +41,10 @@ strong{
 }
 
 .carousel img {
-  height: 200px;
+  height: 250px;
   padding: 30px;
   margin: 40px;
-  border-radius: 50%;
+  border-radius: 20%;
 }
 
 .carousel a {
