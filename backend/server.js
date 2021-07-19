@@ -23,9 +23,6 @@ if(process.env.NODE_ENV === 'development') {
 
 app.use(express.json())       //allows us to accept json data in body and we can access the data from req.body
 
-app.get('/', (req, res) => {
-  res.send('API is running...')
-})
 
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
@@ -36,17 +33,30 @@ app.use('/api/upload', uploadRoutes)
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
 
+//make uploads folder static; see article 12.7 @ 12:00
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+
+//when we deploy our app; for more info see article 14.1
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))               //make frontend/build a static folder
+  
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
+  
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...')
+  })
+}
+
+
 /*
 Static files are typically files such as scripts, CSS files, images, etc.
 that aren't server-generated, but must be sent to the browser when requested.
 If node.js is your web server, it does not serve any static files by default,
 you must configure it to serve the static content you want it to serve.
 */
-
-//make uploads folder static; see article 12.7 @ 12:00
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
-
 
 //handling 404 page errors
 app.use(notFound)
