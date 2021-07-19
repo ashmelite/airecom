@@ -167,6 +167,22 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload: data
     })
     
+    
+    // **NAVBAR USER NAME UPDATE FIX**
+    // update the user's name in the navbar when a user updates Profile
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data
+    })
+    
+    dispatch({                          //pass updated user data (from payload) into userDetails state
+      type: USER_DETAILS_SUCCESS,
+      payload: data
+    })
+    
+    localStorage.setItem('userInfo', JSON.stringify(data))
+    // **NAVBAR USER NAME UPDATE FIX**
+    
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
