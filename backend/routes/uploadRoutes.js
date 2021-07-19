@@ -1,8 +1,11 @@
 import express from 'express'
 import multer from 'multer'
 import path from 'path'
+import sharp from 'sharp'
 
 const router = express.Router()
+
+sharp.cache(false)        //set sharp caching to false on windows
 
 //config for multer; basically configuring the storageEngine; pass it in the upload middleware (below)
 const storage = multer.diskStorage({
@@ -27,6 +30,12 @@ function checkFileType(file, cb) {
   }
 }
 
+//function to resize image using sharp lib
+async function resizeFile(path) {
+  let buffer = await sharp(path).resize(640, 510).toBuffer()
+  return sharp(buffer).toFile(path)
+}
+
 const upload = multer({                   //this is what we'll pass as middleware to our route
   storage,
   fileFilter: function(req, file, cb) {   //so that user can only upload images
@@ -37,6 +46,8 @@ const upload = multer({                   //this is what we'll pass as middlewar
 //endpoint; it will be '/api/upload' (from server.js) and add '/' after '/api/upload' ('/' is from post request below) so that makes it as '/api/upload/' which is still same as 'api/upload'. If it was '/example' in post request below, it'd have been 'api/upload/example'
 router.post('/', upload.single('image'), (req, res) => {                  //single -> upload only one image; see article 12.7 @ 10:00 to know more about 'image' or see uploadFileHandler function in ProductEditScreen in frontend
   req.file.path = req.file.path.replace('\\','/')                         //I've added this line to replace the \ in path with / 
+  // console.log('file', req.file)
+  resizeFile(req.file.path)                                               //call resize function
   res.send(`/${req.file.path}`)                                           //send back the path of the file (where it got stored)
 })
 
