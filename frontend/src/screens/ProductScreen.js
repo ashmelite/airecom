@@ -5,6 +5,7 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/Meta'
 import { listProductDetails, createProductReview } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
@@ -58,6 +59,8 @@ const ProductScreen = ({ history, match }) => {
       {(match.params.id !== product._id) || loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :                //originally it was just checking if loading is true, then show loader. But, this led to the behavior of last seen product details flashing for a second. So, added match params check. 
       
       <>             {/*we've added empty tag here since : (else part) lets us return only one row. Since, we are returning two rows here, we use <> */}
+        <Meta title={product.name}/>     {/* Added Meta/React-Helmet here instead in the outer <> (empty) tag since we want the product to render first*/}
+        
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid/>
