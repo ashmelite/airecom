@@ -31,7 +31,7 @@ const Header = () => {            //Arrow function
             
             <Route render={({ history }) => <SearchBox history={history} /> } />
             
-            <Nav className="ml-auto">
+            <Nav className="ms-auto">       {/* Bootstrap 5 replaced left and right by start and end for RTL support. Instead of ml-auto => ms-auto (start) mr-auto => me-auto (end) */}
             <LinkContainer to='/cart'>
               <Nav.Link><i className="fas fa-shopping-cart" /> Cart</Nav.Link>
             </LinkContainer>
