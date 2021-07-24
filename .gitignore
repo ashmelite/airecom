@@ -5,6 +5,7 @@
 node_modules/
 /.pnp
 .pnp.js
+/console_commands.txt
 
 # testing
 /coverage
