@@ -22,7 +22,8 @@ const Header = () => {            //Arrow function
       <Navbar bg="light" variant="light" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Image src={process.env.PUBLIC_URL + '/logo.png'} fluid/>                       {/* changed from <Navbar.Brand>AirEcom</Navbar.Brand> to Image Container from react bootstrap */}
+            <Image src={process.env.PUBLIC_URL + '/logo.png'} fluid/>
+            {/* changed from <Navbar.Brand>AirEcom</Navbar.Brand> to <Image /> Container from react bootstrap */}
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
