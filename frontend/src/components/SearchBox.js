@@ -17,9 +17,9 @@ const SearchBox = ({ history }) => {
   }
   
   return (
-    <Form onSubmit={submitHandler} className='d-flex ms-5'>
+    <Form onSubmit={submitHandler} inline>
       <Form.Control type='text' name='q' onChange={(e) => setKeyword(e.target.value)} placeholder='Search Products...' className='mr-sm-2 ml-sm-5' />     {/* mr-sm = margin right, small screens;  ml-sm = margin left, small screens */}
-      <Button type='submit' variant='outline-success' className='p-2 ms-2'>Search</Button>                  {/* outline-success = green outline; p-2 = padding of 2 */}
+      <Button type='submit' variant='outline-success' className='p-1.5'>Search</Button>                  {/* outline-success = green outline; p-2 = padding of 2 */}
     </Form>
   )
 }
